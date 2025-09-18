@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">P2P Chat Application</string>
+
+    <!-- Main Activity -->
+    <string name="hint_message_input">Type your message...</string>
+    <string name="send_button_description">Send message</string>
+    <string name="status_initializing">Initializing...</string>
+    <string name="status_ready">Ready for connections</string>
+    <string name="status_connected">Connected to %d peers</string>
+    <string name="status_disconnected">Disconnected</string>
+
+    <!-- Message Status -->
+    <string name="message_status_pending">Pending</string>
+    <string name="message_status_sent">Sent</string>
+    <string name="message_status_delivered">Delivered</string>
+    <string name="message_status_failed">Failed</string>
+
+    <!-- Notifications -->
+    <string name="notification_title">DT-Messaging Service</string>
+    <string name="notification_text">Managing peer connections</string>
+    <string name="notification_new_message">New message received</string>
+
+    <!-- Permissions -->
+    <string name="permission_rationale_title">Permissions Required</string>
+    <string name="permission_rationale_message">This app needs location and Bluetooth permissions to discover and connect to nearby devices for peer-to-peer messaging.</string>
+    <string name="permission_denied_message">Permissions are required for peer-to-peer messaging functionality.</string>
+
+    <!-- Errors -->
+    <string name="error_empty_message">Please enter a message</string>
+    <string name="error_network_unavailable">Network unavailable</string>
+    <string name="error_connection_failed">Connection failed</string>
+    <string name="error_message_send_failed">Failed to send message</string>
+
+    <!-- Success Messages -->
+    <string name="message_queued">Message queued for delivery</string>
+    <string name="message_sent_success">Message sent successfully</string>
+    <string name="peer_connected">Connected to peer</string>
+    <string name="peer_disconnected">Peer disconnected</string>
+
+    <!-- General -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="retry">Retry</string>
+    <string name="settings">Settings</string>
+</resources>

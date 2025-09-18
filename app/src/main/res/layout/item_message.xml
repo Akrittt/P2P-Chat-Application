@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="4dp">
+
+    <LinearLayout
+        android:id="@+id/message_container"
+        android:layout_width="510dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginVertical="2dp"
+        android:background="@drawable/message_sent_background"
+        android:maxWidth="280dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Sender info (for received messages) -->
+        <TextView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/message_sender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="From: user_12345" />
+
+        <!-- Message content -->
+        <TextView
+            android:id="@+id/message_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            tools:text="This is a sample message content that can span multiple lines." />
+
+        <!-- Message metadata container -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <!-- Hop count (for multi-hop messages) -->
+            <TextView
+                android:id="@+id/message_hops"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="10sp"
+                android:visibility="gone"
+                tools:text="Hops: 2" />
+
+            <!-- Time stamp -->
+            <TextView
+                android:id="@+id/message_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="12sp"
+                tools:text="14:30" />
+
+            <!-- Status (for sent messages) -->
+            <TextView
+                android:id="@+id/message_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/status_color"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:text="Sent" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>out>
