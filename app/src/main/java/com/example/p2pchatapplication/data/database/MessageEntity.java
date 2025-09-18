@@ -1,5 +1,6 @@
 package com.example.p2pchatapplication.data.database;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.ColumnInfo;
@@ -12,6 +13,7 @@ import androidx.room.ColumnInfo;
 public class MessageEntity {
 
     @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "message_id")
     public String messageId;
 

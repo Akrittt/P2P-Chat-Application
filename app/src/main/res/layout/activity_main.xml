@@ -84,6 +84,8 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:hint="Type your message..."
+            android:textColor="@android:color/black"
+            android:textColorHint="#FF888888"
             android:background="@drawable/input_background"
             android:padding="12dp"
             android:maxLines="3"
@@ -101,4 +103,5 @@
             app:tint="@android:color/white" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

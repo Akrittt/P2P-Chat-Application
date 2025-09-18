@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.p2pchatapplication.R;
 import com.example.p2pchatapplication.data.database.MessageEntity;
 
 import java.text.SimpleDateFormat;
@@ -98,16 +99,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                     (LinearLayout.LayoutParams) messageContainer.getLayoutParams();
 
             if (isOutgoing) {
-                // Outgoing message - align right, blue background
+                // Outgoing message - align right, black background, white text
                 params.gravity = Gravity.END;
                 messageContainer.setBackgroundResource(R.drawable.message_sent_background);
+                messageContent.setTextColor(0xFFFFFFFF); // White text
+                messageTime.setTextColor(0xFFCCCCCC);    // Light gray text
                 messageSender.setVisibility(View.GONE);
             } else {
-                // Incoming message - align left, gray background
+                // Incoming message - align left, gray background, black text
                 params.gravity = Gravity.START;
                 messageContainer.setBackgroundResource(R.drawable.message_received_background);
+                messageContent.setTextColor(0xFF000000); // Black text
+                messageTime.setTextColor(0xFF666666);    // Dark gray text
                 messageSender.setVisibility(View.VISIBLE);
                 messageSender.setText("From: " + message.senderId);
+                messageSender.setTextColor(0xFF666666);  // Dark gray text
             }
 
             messageContainer.setLayoutParams(params);
@@ -116,6 +122,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             if (isOutgoing) {
                 String statusText = getStatusText(message.status);
                 messageStatus.setText(statusText);
+                messageStatus.setTextColor(0xFF00FF00); // Green status text
                 messageStatus.setVisibility(View.VISIBLE);
             } else {
                 messageStatus.setVisibility(View.GONE);
@@ -124,6 +131,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             // Show hop count for multi-hop messages
             if (message.hopCount > 0) {
                 messageHops.setText("Hops: " + message.hopCount);
+                if (isOutgoing) {
+                    messageHops.setTextColor(0xFFCCCCCC); // Light gray for sent messages
+                } else {
+                    messageHops.setTextColor(0xFF666666); // Dark gray for received messages
+                }
                 messageHops.setVisibility(View.VISIBLE);
             } else {
                 messageHops.setVisibility(View.GONE);

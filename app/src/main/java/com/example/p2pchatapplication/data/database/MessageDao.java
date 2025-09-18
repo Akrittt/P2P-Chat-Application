@@ -42,10 +42,10 @@ public interface MessageDao {
     void deleteMessage(MessageEntity message);
 
     /**
-     * Get all messages ordered by timestamp (newest first).
+     * Get all messages ordered by timestamp (oldest first for chronological chat).
      * LiveData for automatic UI updates.
      */
-    @Query("SELECT * FROM messages ORDER BY timestamp DESC")
+    @Query("SELECT * FROM messages ORDER BY timestamp ASC")
     LiveData<List<MessageEntity>> getAllMessages();
 
     /**

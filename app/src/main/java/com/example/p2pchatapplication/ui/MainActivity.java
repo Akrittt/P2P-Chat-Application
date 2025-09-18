@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.p2pchatapplication.R;
 import com.example.p2pchatapplication.data.database.MessageEntity;
 import com.example.p2pchatapplication.ui.viewmodels.ChatViewModel;
 import com.example.p2pchatapplication.utils.LogUtil;
@@ -93,7 +94,12 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setupRecyclerView() {
         messageAdapter = new MessageAdapter(new ArrayList<>(), currentUserId);
-        messagesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        // Use LinearLayoutManager with stackFromEnd=true to show newest messages at bottom
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true); // Start from bottom
+
+        messagesRecyclerView.setLayoutManager(layoutManager);
         messagesRecyclerView.setAdapter(messageAdapter);
 
         // Scroll to bottom when new messages are added
@@ -101,7 +107,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                messagesRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                // Smooth scroll to the last item (newest message)
+                messagesRecyclerView.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
+            }
+
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                // Scroll to bottom when data changes
+                if (messageAdapter.getItemCount() > 0) {
+                    messagesRecyclerView.scrollToPosition(messageAdapter.getItemCount() - 1);
+                }
             }
         });
     }
