@@ -11,6 +11,7 @@ import com.example.p2pchatapplication.utils.LogUtil;
 
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 
 /**
@@ -106,22 +107,23 @@ public class MessageRepository {
     /**
      * Get pending messages synchronously (for background processing)
      */
-    public Future<List<MessageEntity>> getPendingMessages() {
-        return DTMessagingDatabase.databaseWriteExecutor.submit(() -> {
+    public CompletableFuture<List<MessageEntity>> getPendingMessages() {
+        return CompletableFuture.supplyAsync(() -> {
             try {
+                // The DAO method is now the supplier for the CompletableFuture
                 return messageDao.getPendingMessages(MessageEntity.STATUS_PENDING);
             } catch (Exception e) {
                 LogUtil.e(TAG, "Failed to get pending messages: " + e.getMessage());
                 return null;
             }
-        });
+        }, DTMessagingDatabase.databaseWriteExecutor); // Pass the executor to run the task
     }
 
     /**
      * Get messages that need to be forwarded
      */
-    public Future<List<MessageEntity>> getMessagesToForward() {
-        return DTMessagingDatabase.databaseWriteExecutor.submit(() -> {
+    public CompletableFuture<List<MessageEntity>> getMessagesToForward() {
+        return CompletableFuture.supplyAsync(() -> {
             try {
                 long currentTime = System.currentTimeMillis();
                 return messageDao.getMessagesToForward(
@@ -132,7 +134,7 @@ public class MessageRepository {
                 LogUtil.e(TAG, "Failed to get messages to forward: " + e.getMessage());
                 return null;
             }
-        });
+        }, DTMessagingDatabase.databaseWriteExecutor); // Pass the executor to run the task
     }
 
     /**

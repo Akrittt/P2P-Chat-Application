@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * Background service for managing peer-to-peer connections and message forwarding.
  * Runs as a foreground service to maintain connections when app is minimized.
  */
-public class MessageService extends Service implements
+public abstract class MessageService extends Service implements
         NearbyConnectionManager.ConnectionCallback,
         MessageForwarder.ForwardingCallback {
 
