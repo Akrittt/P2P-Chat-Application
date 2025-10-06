@@ -38,7 +38,7 @@ public class ChatViewModel extends AndroidViewModel {
     }
 
     /**
-     * Get conversation between two users
+     * Get conversation between two users (NEW for friends feature)
      */
     public LiveData<List<MessageEntity>> getConversation(String userId1, String userId2) {
         return repository.getConversation(userId1, userId2);

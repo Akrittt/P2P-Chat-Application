@@ -15,14 +15,15 @@ import java.util.concurrent.Executors;
  * Manages local storage for messages and supports store-and-forward functionality.
  */
 @Database(
-        entities = {MessageEntity.class},
-        version = 1,
+        entities = {MessageEntity.class, FriendEntity.class},
+        version = 2,
         exportSchema = true
 )
 public abstract class DTMessagingDatabase extends RoomDatabase {
 
     // Abstract method to get DAO
     public abstract MessageDao messageDao();
+    public abstract FriendDao friendDao();
 
     // Singleton instance
     private static volatile DTMessagingDatabase INSTANCE;
@@ -45,7 +46,8 @@ public abstract class DTMessagingDatabase extends RoomDatabase {
                                     "dt_messaging_database"
                             )
                             .addCallback(roomDatabaseCallback)
-                            .fallbackToDestructiveMigration() // For development only
+                            .addMigrations(MIGRATION_1_2)  // Add migration for friends table
+                            .fallbackToDestructiveMigration() // For development
                             .build();
                 }
             }
@@ -61,10 +63,9 @@ public abstract class DTMessagingDatabase extends RoomDatabase {
         public void onCreate(SupportSQLiteDatabase db) {
             super.onCreate(db);
 
-            // Perform any initial setup here if needed
             databaseWriteExecutor.execute(() -> {
-                // Database created - perform initialization if needed
-                // For example, you could insert default data here
+                // Database created
+                android.util.Log.d("DTMessagingDB", "Database created with friends support");
             });
         }
 
@@ -72,25 +73,45 @@ public abstract class DTMessagingDatabase extends RoomDatabase {
         public void onOpen(SupportSQLiteDatabase db) {
             super.onOpen(db);
 
-            // Clean up expired messages on database open
+            // Clean up expired messages and set all friends offline on app start
             databaseWriteExecutor.execute(() -> {
-                MessageDao dao = INSTANCE.messageDao();
+                MessageDao messageDao = INSTANCE.messageDao();
+                FriendDao friendDao = INSTANCE.friendDao();
+
                 long currentTime = System.currentTimeMillis();
-                int deletedCount = dao.deleteExpiredMessages(currentTime);
+                int deletedCount = messageDao.deleteExpiredMessages(currentTime);
                 if (deletedCount > 0) {
                     android.util.Log.d("DTMessagingDB",
                             "Cleaned up " + deletedCount + " expired messages");
                 }
+
+                // Set all friends offline (they'll be marked online when they connect)
+                friendDao.setAllOffline();
+                android.util.Log.d("DTMessagingDB", "Set all friends offline on app start");
             });
         }
     };
 
-    // Future migration example (when you upgrade database schema)
+    /**
+     * Migration from version 1 to 2 (adds friends table)
+     */
     static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
-            // Add new column example:
-            // database.execSQL("ALTER TABLE messages ADD COLUMN new_column TEXT");
+            // Create friends table
+            database.execSQL(
+                    "CREATE TABLE IF NOT EXISTS friends (" +
+                            "user_id TEXT PRIMARY KEY NOT NULL, " +
+                            "nickname TEXT, " +
+                            "endpoint_id TEXT, " +
+                            "last_seen INTEGER NOT NULL, " +
+                            "added_date INTEGER NOT NULL, " +
+                            "is_online INTEGER NOT NULL DEFAULT 0, " +
+                            "total_messages INTEGER NOT NULL DEFAULT 0, " +
+                            "is_favorite INTEGER NOT NULL DEFAULT 0)"
+            );
+            android.util.Log.d("DTMessagingDB", "Migrated database to version 2 (added friends)");
         }
     };
+
 }
